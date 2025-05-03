@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Advisor Chat</title>
+  <style>
+    body { font-family: sans-serif; background: #121212; color: #fff; padding: 2rem; }
+    input, button { padding: 0.5rem; font-size: 1rem; }
+    #response { margin-top: 1rem; white-space: pre-line; }
+  </style>
+</head>
+<body>
+  <h1>🤖 Advisor</h1>
+  <input type="text" id="message" placeholder="Задай вопрос..." size="50" />
+  <button onclick="sendMessage()">Отправить</button>
+  <div id="response"></div>
+
+  <script>
+    async function sendMessage() {
+      const msg = document.getElementById('message').value;
+      const resBox = document.getElementById('response');
+      resBox.innerText = "⌛ Ожидаем ответ от Advisor...";
+
+      const res = await fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg })
+      });
+
+      const data = await res.json();
+      resBox.innerText = data.response || "❌ Ошибка. Нет ответа.";
+    }
+  </script>
+</body>
+</html>

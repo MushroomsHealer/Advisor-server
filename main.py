@@ -3,7 +3,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
 import openai
-import os
+import os 
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/", response_class=HTMLResponse)
+async def home():
+    with open("index.html", "r", encoding="utf-8") as f:
+        return f.read()
 
 # Загружаем переменные окружения из .env
 load_dotenv()
